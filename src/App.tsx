@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { InventoryItem, Assignment, NewProduct, BulkAssignment } from './types';
 import { initialInventory, initialAssignments } from './data/initialData';
 import Sidebar from './components/Sidebar';
@@ -128,7 +128,6 @@ const App = () => {
       }));
       setBulkAssignments(newAssignments);
     } else {
-      // Inicializar con categorías vacías
       const newAssignments = selectedPeople.map(person => ({
         personName: person,
         category: ''
@@ -157,8 +156,7 @@ const App = () => {
     }));
 
     setAssignments([...assignments, ...newAssignments]);
-    
-    // Reset
+
     setShowAddAssignment(false);
     setBulkAssignmentStep(null);
     setSelectedPeople([]);
@@ -176,14 +174,19 @@ const App = () => {
     setBulkDate('');
   };
 
-  const selectedProduct = bulkEquipment ? inventory.find(item => item.name === bulkEquipment) : null;
-  const needsCategorySelection = selectedProduct && selectedProduct.categories.length > 1;
+  // selectedProduct ahora devuelve undefined en vez de null
+  const selectedProduct = bulkEquipment
+    ? inventory.find(item => item.name === bulkEquipment)
+    : undefined;
+
+  // needsCategorySelection ahora siempre es boolean
+  const needsCategorySelection =
+    selectedProduct ? selectedProduct.categories.length > 1 : false;
 
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
 
-      {/* Main Content */}
       <div className="flex-1 overflow-auto">
         {activeMenu === 'dashboard' && (
           <Dashboard inventory={inventory} assignmentsCount={assignments.length} />
@@ -208,7 +211,6 @@ const App = () => {
         )}
       </div>
 
-      {/* Add Product Modal */}
       <AddProductModal
         show={showAddProduct}
         newProduct={newProduct}
@@ -220,7 +222,6 @@ const App = () => {
         onRemoveCategory={removeCategory}
       />
 
-      {/* Bulk Assignment Modal */}
       <BulkAssignmentModal
         show={showAddAssignment}
         bulkAssignmentStep={bulkAssignmentStep}
@@ -246,4 +247,3 @@ const App = () => {
 };
 
 export default App;
-
