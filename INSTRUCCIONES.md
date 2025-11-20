@@ -9,6 +9,8 @@ node --version
 npm --version
 ```
 
+
+
 ## Paso 2: Instalar las dependencias del proyecto
 Abre la terminal en la carpeta del proyecto (`E:\Clover\Clover`) y ejecuta:
 
